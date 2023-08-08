@@ -1,0 +1,19 @@
+{
+  "name": "vendor_name/php-routing",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Jony2Good",
+      "email": "akk_12@mail.ru"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app"
+    }
+  }
+}

@@ -4,9 +4,9 @@ namespace App\System\Route;
 
 class RouteConfiguration
 {
-    protected string $route;
-    protected string $controller;
-    protected string $action;
+    public string $route;
+    public string $controller;
+    public string $action;
     protected string $name;
     protected string $middleware;
 
@@ -41,4 +41,5 @@ class RouteConfiguration
         $this->middleware = $middleware;
         return $this;
     }
+
 }

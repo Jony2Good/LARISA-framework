@@ -1,15 +1,7 @@
 # Simple PHP framework "Mild"
 ![My first gorgeous framework](https://github.com/Jony2Good/PHP-routing/assets/91899278/db90a60b-39c5-44d5-9ba4-ecb94f10596c)
 
-Реализация файлового хранилища в видео REST API на языке программирования PHP. Итоговая работа на учебном курсе в компании "Skillbox". Код проверен с помощью статических анализаторов php-cs-fixer, phpstan, rector, qodana, а также протестирован с помощью программы Postman. 
-
-В проекте используются следующие шаблоны проектирования:
-* singleton
-* strategy
-* active records
-* fabric
-* registry
-
+Реализация простого фреймворка на языке программирования PHP. Музой для создания программы стал непревзойденный Laravel. Код проверен с помощью статических анализаторов php-cs-fixer, phpstan, rector, qodana, а также протестирован в Postman. Впереди тесты на PHPUnit.
 
 1. Файловая структура проекта:
 * app:

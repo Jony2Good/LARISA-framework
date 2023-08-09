@@ -21,6 +21,7 @@ class PostController extends Controller
      */
     public function index(): string
     {
+        $this->getModel();
         return View::view('post.index');
     }
 
@@ -34,6 +35,7 @@ class PostController extends Controller
      */
     public function store()
     {
+
         $title = $_POST['title'] ?? "";
         $content = $_POST['content'] ?? "";
 
@@ -48,5 +50,10 @@ class PostController extends Controller
             ]);
         }
         Route::redirect('/PHP-routing/public/posts');
+    }
+
+    private function getModel()
+    {
+        var_dump($this->model->all());
     }
 }

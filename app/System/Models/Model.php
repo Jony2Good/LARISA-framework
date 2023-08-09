@@ -58,10 +58,8 @@ abstract class Model
         if (!$isValid) {
             throw new ExcValidation();
         }
-
         $names = [];
         $masks = [];
-
         foreach ($fields as $field => $val) {
             $names[] = $field;
             $masks[] = ":$field";
@@ -71,6 +69,17 @@ abstract class Model
 
         $query = "INSERT INTO {$this->table} ($namesStr) VALUES ($masksStr)";
         $this->db->query($query, $fields);
-        return $this->db->lastInsertId();
+        return $this->db->lastInsertId();//ВОЗВРАЩАЕТ ID ДЛЯ УНИВЕРСАЛЬНОСТИ
     }
+
+    public function update(int $id, array $fields): bool
+    {
+        //валидация исключение
+    }
+
+    public function delete(int $id): bool
+    {
+
+    }
+
 }

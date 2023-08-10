@@ -18,7 +18,7 @@ class QuerySelect
     {
 
         $this->builder->addWhere($where);
-        $this->binds = $binds + $this->binds;//
+        $this->binds = $binds + $this->binds;
         return $this;
     }
 
@@ -30,7 +30,7 @@ class QuerySelect
 
     public function get(): array
     {
-        return $this->db->select($this->builder, $this->binds);//
+        return $this->db->select($this->builder, $this->binds);
     }
 
 }

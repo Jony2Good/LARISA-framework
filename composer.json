@@ -10,10 +10,17 @@
     }
   ],
   "require": {
+    "rakit/validation": "^1.4",
+    "twig/twig": "^3.3"
   },
   "autoload": {
     "psr-4": {
       "App\\": "app"
-    }
+    },
+    "files": [
+      "config/db.php",
+      "config/options.php",
+      "routes/web.php"
+    ]
   }
 }

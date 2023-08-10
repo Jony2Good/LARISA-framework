@@ -2,8 +2,6 @@
 
 namespace App\System\Route;
 
-use JetBrains\PhpStorm\NoReturn;
-
 class RouteDispatcher
 {
     private string $requestUri = '/';
@@ -17,7 +15,7 @@ class RouteDispatcher
      */
     public function __construct(RouteConfiguration $routeConfiguration)
     {
-        $this->routeConfiguration = $routeConfiguration;
+       $this->routeConfiguration = $routeConfiguration;
     }
 
     public function process(): void
@@ -81,7 +79,7 @@ class RouteDispatcher
         }
     }
 
-    #[NoReturn] private function render(): void
+    private function render(): void
     {
         $class = $this->routeConfiguration->controller;
         $method = $this->routeConfiguration->action;

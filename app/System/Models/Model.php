@@ -19,6 +19,9 @@ abstract class Model
 
     protected Validator $validator;
 
+    /**
+     * @return static
+     */
     public static function getInstance(): static
     {
         if (static::$instance === null) {
@@ -33,11 +36,18 @@ abstract class Model
         $this->validator = new Validator($this->validationRules);
     }
 
+    /**
+     * @return array
+     */
     public function all(): array
     {
         return $this->selector()->get();
     }
 
+    /**
+     * @param int $id
+     * @return array|null
+     */
     public function get(int $id): ?array
     {
         //формирует строку "Where articles_id = :pk" и для команды execute(['pk' => $id])
@@ -45,13 +55,67 @@ abstract class Model
         return $res[0] ?? null;
     }
 
+    /**
+     * @return QuerySelect
+     */
     public function selector(): QuerySelect
     {
         $builder = new SelectBuilder($this->table);
         return new QuerySelect($this->db, $builder);
     }
 
+    /**
+     * @param array $fields
+     * @return int
+     * @throws ExcValidation
+     */
     public function insert(array $fields): int
+    {
+        $str = $this->getFields($fields);
+        $query = "INSERT INTO {$this->table} ({$str[0]}) VALUES ({$str[1]})";
+        $this->db->query($query, $fields);
+        return $this->db->lastInsertId();
+    }
+
+    /**
+     * @param int $id
+     * @param array $fields
+     * @return bool
+     * @throws ExcValidation
+     */
+    public function update(int $id, array $fields): bool
+    {
+        $checkId = $this->get($id);
+        if (isset($checkId)) {
+            $str = $this->updateFields($fields);
+            $query = "UPDATE {$this->table} SET {$str} WHERE {$this->pk} = :{$this->pk}";
+            $this->db->query($query, $fields + [$this->pk => $id]);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id): bool
+    {
+        $checkId = $this->get($id);
+        if (isset($checkId)) {
+            $query = "DELETE FROM {$this->table} WHERE {$this->pk} = :{$this->pk}";
+            $this->db->query($query, [$this->pk => $id]);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param array $fields
+     * @return array
+     * @throws ExcValidation
+     */
+    private function getFields(array $fields): array
     {
         $isValid = $this->validator->run($fields);
 
@@ -67,19 +131,19 @@ abstract class Model
         $namesStr = implode(', ', $names);
         $masksStr = implode(', ', $masks);
 
-        $query = "INSERT INTO {$this->table} ($namesStr) VALUES ($masksStr)";
-        $this->db->query($query, $fields);
-        return $this->db->lastInsertId();//ВОЗВРАЩАЕТ ID ДЛЯ УНИВЕРСАЛЬНОСТИ
+        return [$namesStr, $masksStr];
     }
 
-    public function update(int $id, array $fields): bool
+    private function updateFields(array $fields)
     {
-        //валидация исключение
+        $isValid = $this->validator->run($fields);
+        if (!$isValid) {
+            throw new ExcValidation();
+        }
+        $pairs = [];
+        foreach ($fields as $field => $val) {
+            $pairs[] = "$field=:$field";
+         }
+        return implode(', ', $pairs);
     }
-
-    public function delete(int $id): bool
-    {
-
-    }
-
 }

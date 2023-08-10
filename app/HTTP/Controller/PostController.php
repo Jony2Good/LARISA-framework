@@ -7,7 +7,7 @@ use App\System\View\View;
 use App\HTTP\Model\Post;
 use System\Exceptions\ExcValidation;
 
-class PostController extends Controller
+class PostController extends BaseController
 {
     protected Post $model;
 
@@ -19,10 +19,9 @@ class PostController extends Controller
     /**
      * @throws ExcValidation
      */
-    public function index(): string
+    public function main(): string
     {
-        $this->getModel();
-        return View::view('post.index');
+       return View::view('main.main');
     }
 
     public function show($id): string
@@ -35,7 +34,6 @@ class PostController extends Controller
      */
     public function store()
     {
-
         $title = $_POST['title'] ?? "";
         $content = $_POST['content'] ?? "";
 
@@ -46,14 +44,37 @@ class PostController extends Controller
             $_SESSION['content'] = $content;
             $this->model->insert([
                 'title' => $title,
-                'content' => $content
+                'content' => $content,
             ]);
         }
         Route::redirect('/PHP-routing/public/posts');
     }
 
-    private function getModel()
+    public function remove($id)
     {
-        var_dump($this->model->all());
+        var_dump($this->model->delete($id));
+
+    }
+
+    public function change()
+    {
+      $obj = $this->getJson();
+      $this->model->update((int)$obj['id'], ['title' => $obj['title'], 'content' => $obj['content']]);
+    }
+
+    /**
+    * @throws \Exception
+     */
+    private function getJson()
+    {
+        $json = file_get_contents('php://input');
+        if (!$json) {
+           die();
+        }
+        $obj = json_decode($json, true);
+        if (!isset($obj)) {
+            throw new \Exception('Bad JSON');
+        }
+       return $obj;
     }
 }

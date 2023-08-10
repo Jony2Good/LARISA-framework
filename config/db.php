@@ -1,11 +1,7 @@
 <?php
 
-    return [
-        'enable' => true,
-        'host' => '127.0.0.1',
-        'port' => '3306',
-        'username' => 'root',
-        'password' => '',
-        'db' => 'message'
-        ];
+const DB_HOST = 'localhost';
+const DB_NAME = 'message';
+const DB_USER = 'root';
+const DB_PASS = '';
 
